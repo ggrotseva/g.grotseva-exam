@@ -43,3 +43,27 @@ jobs:
         with: 
           service-id: ${{ secrets.SERVICE_ID }}
           api-key: ${{ secrets.RENDER_API }}
+          
+  ui_tests:
+
+    needs: deploy
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+      
+    - name: Setup Node.js 14.x
+      uses: actions/setup-node@v3
+      with:
+        node-version: 14.x
+        cache: 'npm'
+        
+    - name: Install npm
+      run: npm install
+
+    - name: Install playwright browsers
+      run: npx playwright install --with-deps
+      
+    - name: Run UI tests
+      run: npm run test:ui
