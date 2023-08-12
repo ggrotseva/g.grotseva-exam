@@ -13,11 +13,6 @@ jobs:
   
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [14.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
@@ -36,3 +31,15 @@ jobs:
 
     - name: Print softuni username
       run: echo "g.grotseva"
+
+  deploy:
+  
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Render Deploy Action
+        uses: johnbeynon/render-deploy-action@v0.0.8
+        with: 
+          service-id: ${{ secrets.SERVICE_ID }}
+          api-key: ${{ secrets.RENDER_API }}
